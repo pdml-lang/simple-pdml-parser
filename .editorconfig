@@ -1,0 +1,92 @@
+root = true
+
+
+## Java source code
+###################
+[*.java]
+charset = utf-8
+end_of_line = unset
+indent_size = unset
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+
+## Repository Configurations
+############################
+[.{git*,editorconfig,*.yml}]
+charset = utf-8
+end_of_line = lf
+indent_size = unset
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[.gitmodules]
+indent_style = tab
+
+[.gitkeep]
+insert_final_newline = false
+
+
+## Shell Scripts
+################
+[*.sh]
+charset = utf-8
+end_of_line = lf
+indent_size = unset
+indent_style = tab
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+
+## Batch Scripts
+################
+[*.{bat,cmd}]
+charset = utf-8
+end_of_line = crlf
+indent_size = unset
+indent_style = tab
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+
+## PML Sources
+##############
+[*.pml]
+charset = utf-8
+end_of_line = unset
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+
+## Markdown GFM
+###############
+[*.md]
+charset = utf-8
+end_of_line = unset
+indent_size = unset
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+
+## Plain-Text Files
+###################
+[*.txt]
+charset = utf-8
+indent_size = unset
+indent_style = space
+end_of_line = unset
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[{LICENSE,README}]
+charset = utf-8
+end_of_line = unset
+indent_size = unset
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true

@@ -1,0 +1,29 @@
+* text=auto
+
+## Java Sources
+###############
+*.gradle text
+*.java   text
+
+## Repository Configuration
+###########################
+.editorconfig    text eol=lf
+.gitattributes   text eol=lf
+.gitconfig       text eol=lf
+.gitignore       text eol=lf
+.gitkeep         text eol=lf
+.gitmodules      text eol=lf
+.travis.yml      text eol=lf
+
+## Documentation Files
+######################
+*.md         text
+*.pml        text linguist-language=PML
+*.txt        text
+LICENSE      text
+
+## Scripts
+##########
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+*.sh    text eol=lf

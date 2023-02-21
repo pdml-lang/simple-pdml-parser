@@ -1,0 +1,58 @@
+plugins {
+    id 'application'
+}
+
+version = '0.9.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+    jvmArgs ( ['--enable-preview'] )
+}
+
+/*
+javadoc {
+    jvmArgs ( ['--enable-preview'] )
+}
+ */
+javadoc.options {
+    addBooleanOption('-enable-preview', true)
+    addStringOption('-release', '17')
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+tasks.withType(JavaCompile) {
+    // options.compilerArgs += [ '-Xlint:deprecation', '-Xlint:unchecked', '-Xlint:preview' ]
+    options.compilerArgs += [ '--enable-preview' ]
+}
+
+application {
+    mainClass = 'dev.pdml.basicparser.Start'
+    applicationDefaultJvmArgs = ['-ea'] // enable assertions
+}
+
+// OS script file name to start the application
+tasks.startScripts {
+    applicationName = "pdml"
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'dev.pdml.basicparser.Start',
+            'Class-Path': configurations.runtimeClasspath.files.collect { it.getName() }.join(' ')
+        )
+    }
+}

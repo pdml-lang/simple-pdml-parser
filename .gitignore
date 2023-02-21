@@ -1,0 +1,20 @@
+# OS scripts
+bin/
+
+# Gradle project-specific cache directory
+**/.gradle
+
+# IntelliJ Idea project-specific cache directory
+**/.idea
+
+# Gradle build output directory
+**/build
+
+# 'temp' directories
+**/temp
+
+# Directories and files starting with ---
+**/---*
+
+# Directories and files starting with NOGIT_
+**/NOGIT_*
