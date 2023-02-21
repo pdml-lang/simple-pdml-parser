@@ -23,11 +23,11 @@ List the node names in a PDML document:
 PdmlParser parser = new PdmlParser();
 
 RootNode rootNode = parser.parseString ( """
-	[doc
-		text
-		[child1 text child 1]
-		[child2 text child 2]
-	]""" );
+    [doc
+        text
+        [child1 text child 1]
+        [child2 text child 2]
+    ]""" );
 
 NodeUtils.forEachNodeInTree ( rootNode, node -> {
     if ( node instanceof RootOrBranchNode branchNode ) {
