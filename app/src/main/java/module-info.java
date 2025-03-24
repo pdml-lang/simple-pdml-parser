@@ -1,8 +1,5 @@
-module dev.pdml.simpleparser {
+module dev.pdml.core.simpleparser {
 
-    exports dev.pdml.simpleparser;
-    exports dev.pdml.simpleparser.node;
-    exports dev.pdml.simpleparser.reader;
-    exports dev.pdml.simpleparser.parser;
-    exports dev.pdml.simpleparser.utils;
+    exports dev.pdml.core.simpleparser;
+    exports dev.pdml.core.simpleparser.data;
 }

@@ -1,51 +1,27 @@
-# Simple PDML Parser Written in Java
-
-This repository contains the source code files of a simple PDML parser written in Java.
-
-The parser supports [Core PDML](https://pdml-lang.dev/docs/core/specification/index.html), and the following PDML extensions:
-
-- [Comments](https://pdml-lang.dev/docs/extensions/user_manual/index.html#comments)
-- [Character escape sequences](https://pdml-lang.dev/docs/extensions/user_manual/index.html#escape_sequences)
-
-There are no dependencies.
+# Simple Core PDML Parser Written in Java
 
 ## Overview
 
-This parser reads input from a standard Java character input stream (file, string, STDIN, Java `Reader`, etc.) and produces a PDML AST.
+This repository contains the source code of a simple [Core PDML](https://pdml-lang.dev/docs/core/specification/index.html) recursive descent LL(1) parser written in Java.
 
-The AST can then be explored, modified, or transformed in your application.
+PDML extensions are not supported.
 
-## Usage example
+This implementation is dependency-free and focuses on simplicity and minimalism (no bells and whistles).
+It's just an example of basic Core PDML reading/parsing operations implemented in Java.
+The code might serve as a starting point to create more sophisticated parsers providing user-friendly error messages, feature-rich utilities to explore and transform a PDML tree, etc.
 
-List the node names in a PDML document:
+A much more advanced implementation, covering all PDML extensions, is available in the  [full-pdml-impl](https://github.com/pdml-lang/full-pdml-impl) repository.
 
-```
-PdmlParser parser = new PdmlParser();
+## Usage
 
-RootNode rootNode = parser.parseString ( """
-    [doc
-        text
-        [child1 text child 1]
-        [child2 text child 2]
-    ]""" );
+File `Start.java` in the source code tree contains a simple usage example.
+You can also have a look at unit tests in the `test` directory.
 
-NodeUtils.forEachNodeInTree ( rootNode, node -> {
-    if ( node instanceof RootOrBranchNode branchNode ) {
-        System.out.println ( branchNode.getName() );
-    }
-});
-```
-
-Output:
+You can use the standard CLI commands of the [Gradle Build Tool](https://gradle.org/) to build and run the project, run tests, and create Javadoc files, e.g.:
 
 ```
-doc
-child1
-child2
-````
-
-## Useful links:
-
-- [API Javadoc](https://pdml-lang.dev/docs/api/simple-parser/index.html)
-- [PDML website](https://pdml-lang.dev/).
-- [Full PDML implementation](https://github.com/pdml-lang/full-pdml-impl) (supports all PDML extensions)
+./gradlew build
+./gradlew run
+./gradlew test
+./gradlew javadoc
+```
