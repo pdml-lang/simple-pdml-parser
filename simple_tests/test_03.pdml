@@ -1,0 +1,8 @@
+[config
+    [color light green]
+    [dimensions
+        [width 200]
+        [height 100]
+    ]
+]
+

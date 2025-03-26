@@ -7,13 +7,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class PdmlParser {
+public class CorePdmlParser {
 
 
-    private PdmlReader reader;
+    private CorePdmlReader reader;
 
 
-    public PdmlParser() {}
+    public CorePdmlParser() {}
 
 
     public TaggedNode parse ( Path filePath ) throws IOException, InvalidPdmlException {
@@ -24,7 +24,7 @@ public class PdmlParser {
 
     public TaggedNode parse ( String PdmlCode ) throws InvalidPdmlException {
 
-        reader = new PdmlReader ( PdmlCode );
+        reader = new CorePdmlReader ( PdmlCode );
         return parseRootNode();
     }
 
@@ -33,15 +33,16 @@ public class PdmlParser {
 
     private TaggedNode parseRootNode() throws InvalidPdmlException {
 
-        reader.skipSpacesAndTabsAndLineBreaks();
+        reader.skipWhitespace();
 
-        TaggedNode rootNode = parseTaggedNode ();
+        TaggedNode rootNode = parseTaggedNode();
         if ( rootNode == null ) {
             errorDetected ( "Root node expected (e.g. \"[root\")" );
         }
 
-        reader.skipSpacesAndTabsAndLineBreaks();
-        if ( ! reader.isAtEnd () ) {
+        reader.skipWhitespace();
+
+        if ( ! reader.isAtEnd() ) {
             errorDetected ( "No more text expected" );
         }
 
@@ -88,7 +89,7 @@ public class PdmlParser {
             if ( text != null ) {
                 parentNode.appendText ( text );
             } else {
-                TaggedNode childNode = parseTaggedNode ();
+                TaggedNode childNode = parseTaggedNode();
                 if ( childNode != null ) {
                     parentNode.appendChild ( childNode );
                 } else {
@@ -97,17 +98,12 @@ public class PdmlParser {
             }
         }
 
-        if ( parentNode.isLeaf () ) {
+        if ( parentNode.isLeaf() ) {
             errorDetected ( "Child nodes required" );
         }
     }
 
     private void errorDetected ( String message ) throws InvalidPdmlException {
-
-        String position =
-            reader.isAtEnd () ?
-                " at the end of document." :
-                " at position " + (reader.currentPosition() + 1) + ".";
-        throw new InvalidPdmlException ( message + position );
+        throw new InvalidPdmlException ( message, reader.currentLineNumber(), reader.currentColumnNumber() );
     }
 }

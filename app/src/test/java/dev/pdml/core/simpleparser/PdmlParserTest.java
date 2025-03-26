@@ -8,15 +8,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PdmlParserTest {
 
+    private static final CorePdmlParser PARSER = new CorePdmlParser();
+
     @Test
     public void test() throws InvalidPdmlException {
 
-        PdmlParser parser = new PdmlParser();
-        TaggedNode rootNode = parser.parse ( "[root]" );
+        TaggedNode rootNode = PARSER.parse ( "[root]" );
         assertEquals ( "root", rootNode.tag() );
         assertTrue ( rootNode.isLeaf () );
 
-        rootNode = parser.parse ( "[root [child foo bar]]" );
+        rootNode = PARSER.parse ( "[root [child foo bar]]" );
         assertEquals ( "root", rootNode.tag() );
         assertFalse ( rootNode.isLeaf () );
 
@@ -26,13 +27,50 @@ class PdmlParserTest {
         assertFalse ( childNode.isLeaf () );
 
         TextLeaf textNode = (TextLeaf) childNode.childNodes().get ( 0 );
-        assertEquals ( "foo bar", textNode.text () );
+        assertEquals ( "foo bar", textNode.text() );
+
+        testKeyValue ( "[color light green]", "color", "light green" );
+        testKeyValue ( "[a\\sb \\[text\\n\\]]", "a b", "[text\n]" );
+
+        // Whitespace before and after root node is ignored
+        rootNode = PARSER.parse ( " \t\n\r\n\f[root] \t\n\r\n\f" );
+        assertEquals ( "root", rootNode.tag() );
+        assertTrue ( rootNode.isLeaf () );
+
+        // Other chars not allowed
+        assertThrows ( InvalidPdmlException.class, () -> PARSER.parse ( " a [root]" ) );
 
         // Invalid
-        assertThrows ( InvalidPdmlException.class, () -> parser.parse ( "[root" ) );
-        assertThrows ( InvalidPdmlException.class, () -> parser.parse ( "[root*]" ) );
-        assertThrows ( InvalidPdmlException.class, () -> parser.parse ( "[ root]" ) );
-        assertThrows ( InvalidPdmlException.class, () -> parser.parse ( "[root ]" ) );
-        assertThrows ( InvalidPdmlException.class, () -> parser.parse ( "[root[child]]" ) );
+        assertThrows ( InvalidPdmlException.class, () -> PARSER.parse ( "[root" ) );
+        assertThrows ( InvalidPdmlException.class, () -> PARSER.parse ( "[ root]" ) );
+        assertThrows ( InvalidPdmlException.class, () -> PARSER.parse ( "[root ]" ) );
+        assertThrows ( InvalidPdmlException.class, () -> PARSER.parse ( "[root[child]]" ) );
+    }
+
+    @Test
+    public void testSeparator() throws InvalidPdmlException {
+
+        testKeyValue ( "[color green]", "color", "green" );
+        testKeyValue ( "[color\tgreen]", "color", "green" );
+        testKeyValue ( "[color\ngreen]", "color", "green" );
+        testKeyValue ( "[color\r\ngreen]", "color", "green" );
+
+        testKeyValue ( "[color  green]", "color", " green" );
+        testKeyValue ( """
+                        [color
+                            green
+                        ]""", "color", "    green\n" );
+        testKeyValue ( "[a\\sb c]", "a b", "c" );
+        testKeyValue ( "[a b\\sc]", "a", "b c" );
+
+        assertThrows ( InvalidPdmlException.class, () -> new CorePdmlParser().parse ( "[b[i huge]]" ) );
+    }
+
+    public void testKeyValue ( String code, String expectedTag, String expectedText ) throws InvalidPdmlException {
+
+        TaggedNode rootNode = PARSER.parse ( code );
+        assertEquals ( expectedTag, rootNode.tag() );
+        TextLeaf textLeaf = (TextLeaf) rootNode.childNodes().get ( 0 );
+        assertEquals ( expectedText, textLeaf.text() );
     }
 }

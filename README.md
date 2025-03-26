@@ -2,20 +2,21 @@
 
 ## Overview
 
-This repository contains the source code of a simple [Core PDML](https://pdml-lang.dev/docs/core/specification/index.html) recursive descent LL(1) parser written in Java.
+This repository contains the source code of a simple Core PDML recursive descent LL(1) parser written in Java.
 
-PDML extensions are not supported.
+The parser implements version 2.0.0 of the [Core PDML Specification](https://pdml-lang.dev/docs/core/specification/index.html).
+[PDML extensions](https://pdml-lang.dev/docs/extensions/user_manual/index.html) are not supported.
 
 This implementation is dependency-free and focuses on simplicity and minimalism (no bells and whistles).
-It's just an example of basic Core PDML reading/parsing operations implemented in Java.
-The code might serve as a starting point to create more sophisticated parsers providing user-friendly error messages, feature-rich utilities to explore and transform a PDML tree, etc.
+It shows how basic Core PDML reading/parsing operations can be implemented in Java.
+The code might serve as a starting point to create more sophisticated parsers providing advanced error handling, feature-rich utilities to explore and transform a PDML AST, etc.
+You may also have a look at the unit tests in the `test` directory.
 
 A much more advanced implementation, covering all PDML extensions, is available in the  [full-pdml-impl](https://github.com/pdml-lang/full-pdml-impl) repository.
 
 ## Usage
 
 File `Start.java` in the source code tree contains a simple usage example.
-You can also have a look at unit tests in the `test` directory.
 
 You can use the standard CLI commands of the [Gradle Build Tool](https://gradle.org/) to build and run the project, run tests, and create Javadoc files, e.g.:
 
@@ -24,4 +25,7 @@ You can use the standard CLI commands of the [Gradle Build Tool](https://gradle.
 ./gradlew run
 ./gradlew test
 ./gradlew javadoc
+./gradlew installDist
 ```
+
+Note: On Windows type "gradlew" instead of "./gradlew".
