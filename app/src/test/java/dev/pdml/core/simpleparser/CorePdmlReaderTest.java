@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PdmlReaderTest {
+class CorePdmlReaderTest {
 
     @Test
     void generalTest() throws InvalidPdmlException {
@@ -63,10 +63,6 @@ class PdmlReaderTest {
         expectInvalidTag ( "tag\u001F]" );
         expectInvalidTag ( "tag\u0080]" );
         expectInvalidTag ( "tag\u009F]" );
-
-        // Invalid Unicode surrogate code points
-        expectInvalidTag ( "tag\uD800]" );
-        expectInvalidTag ( "tag\uDFFF]" );
     }
 
     @Test
@@ -110,10 +106,6 @@ class PdmlReaderTest {
         expectInvalidText ( "text\u001F]" );
         expectInvalidText ( "text\u0080]" );
         expectInvalidText ( "text\u009F]" );
-
-        // Invalid Unicode surrogate code points
-        expectInvalidText ( "text\uD800]" );
-        expectInvalidText ( "text\uDFFF]" );
     }
 
 

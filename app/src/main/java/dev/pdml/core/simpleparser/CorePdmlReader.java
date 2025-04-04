@@ -94,8 +94,12 @@ public class CorePdmlReader {
             } else if ( currentChar >= 0X0080 && currentChar <= 0X009F ) {
                 errorDetected ( "Unicode code points in the range U+0080 to U+009F (control characters) are not allowed." );
 
-            } else if ( currentChar >= 0XD800 && currentChar <= 0XDFFF ) {
-                errorDetected ( "Unicode code points in the range U+D800 to U+DFFF are not allowed (they are surrogates reserved to encode code points beyond U+FFFF in UTF-16)." );
+            /*
+                This doesn't work because Java uses UTF-16 to store strings in memory
+                Each char in Java is a 16-bit (2-byte) code unit, which follows UTF-16 encoding rules.
+                } else if ( currentChar >= 0XD800 && currentChar <= 0XDFFF ) {
+                    errorDetected ( "Unicode code points in the range U+D800 to U+DFFF are not allowed (they are surrogates reserved to encode code points beyond U+FFFF in UTF-16)." );
+             */
 
             } else if ( currentChar == CorePdmlConstants.ESCAPE_CHAR ) {
                 appendEscapedCharacter ( result, escapeChars );
