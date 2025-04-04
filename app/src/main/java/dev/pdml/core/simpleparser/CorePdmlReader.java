@@ -33,9 +33,9 @@ public class CorePdmlReader {
     public boolean isAtEnd() { return currentPosition >= PdmlCode.length(); }
 
 
-    public boolean readNodeStart() { return acceptChar ( CorePdmlConstants.NODE_START ); }
+    public boolean readNodeStart() { return acceptChar ( CorePdmlConstants.NODE_START_CHAR ); }
 
-    public boolean readNodeEnd() { return acceptChar ( CorePdmlConstants.NODE_END ); }
+    public boolean readNodeEnd() { return acceptChar ( CorePdmlConstants.NODE_END_CHAR ); }
 
     public String readTag() throws InvalidPdmlException {
         return readTagOrText (
@@ -79,7 +79,7 @@ public class CorePdmlReader {
         while ( true ) {
 
             if ( isAtEnd() ) {
-                errorDetected ( "Unexpected end of document." );
+                break;
 
             } else if ( endChars.contains ( currentChar ) ) {
                 break;

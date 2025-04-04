@@ -61,7 +61,7 @@ public class CorePdmlParser {
         TaggedNode taggedNode = new TaggedNode ( tag );
 
         if ( reader.readNodeEnd() ) {
-            // it's an empty node
+            // it's a tagged leaf node
             return taggedNode;
         }
 

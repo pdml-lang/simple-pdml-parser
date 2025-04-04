@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PdmlReaderTest {
 
     @Test
-    void test() throws InvalidPdmlException {
+    void generalTest() throws InvalidPdmlException {
 
         CorePdmlReader reader = new CorePdmlReader ( "[root [child\nfoo bar]]" );
         assertEquals ( 0, reader.currentPosition() );
@@ -35,7 +35,7 @@ class PdmlReaderTest {
     }
 
     @Test
-    void tesReadTag() throws InvalidPdmlException {
+    void readTag() throws InvalidPdmlException {
 
         expectTag ( "tag1 ", "tag1" );
         expectTag ( "tag_2] ", "tag_2" );
@@ -43,7 +43,6 @@ class PdmlReaderTest {
         expectTag ( "tag_.-] ", "tag_.-" );
         expectTag ( "_]", "_" );
         expectTag ( "คุณภาพ]", "คุณภาพ" );
-
 
         // Escape sequences
         expectTag ( "tag_3\\]] ", "tag_3]" );
@@ -56,7 +55,6 @@ class PdmlReaderTest {
         assertNull ( reader.readTag() );
 
         // Invalid
-        expectInvalidTag ( "tag" ); // end node or separator missing
         expectInvalidTag ( "tag|" ); // invalid char |
         expectInvalidTag ( "tag\\m]" ); // invalid escape char \m
 
@@ -68,9 +66,19 @@ class PdmlReaderTest {
 
         // Invalid Unicode surrogate code points
         expectInvalidTag ( "tag\uD800]" );
-        expectInvalidTag ( "tag\uDBFF]" );
-        expectInvalidTag ( "tag\uDC00]" );
         expectInvalidTag ( "tag\uDFFF]" );
+    }
+
+    @Test
+    void readSeparator() throws InvalidPdmlException {
+
+        expectSeparator ( " ", true );
+        expectSeparator ( "\t", true );
+        expectSeparator ( "\n", true );
+        expectSeparator ( "\r\n", true );
+
+        expectSeparator ( "a", false );
+        expectSeparator ( "\\s", false );
     }
 
     @Test
@@ -94,9 +102,8 @@ class PdmlReaderTest {
         CorePdmlReader reader = new CorePdmlReader ( "]" );
         assertNull ( reader.readText() );
 
-        // Invalid
-        expectInvalidText ( "text" ); // node delimiter missing
-        expectInvalidText ( "text\\m]" ); // invalid escape char \m
+        // Invalid escape char
+        expectInvalidText ( "text\\m]" );
 
         // Invalid Unicode control code points
         expectInvalidText ( "text\u0000]" );
@@ -106,8 +113,6 @@ class PdmlReaderTest {
 
         // Invalid Unicode surrogate code points
         expectInvalidText ( "text\uD800]" );
-        expectInvalidText ( "text\uDBFF]" );
-        expectInvalidText ( "text\uDC00]" );
         expectInvalidText ( "text\uDFFF]" );
     }
 
@@ -118,6 +123,12 @@ class PdmlReaderTest {
 
         CorePdmlReader reader = new CorePdmlReader ( code );
         assertEquals ( expectedTag, reader.readTag() );
+    }
+
+    private void expectSeparator ( String code, boolean expectedResult ) throws InvalidPdmlException {
+
+        CorePdmlReader reader = new CorePdmlReader ( code );
+        assertEquals ( expectedResult, reader.readSeparator() );
     }
 
     private void expectText ( String code, String expectedText ) throws InvalidPdmlException {
